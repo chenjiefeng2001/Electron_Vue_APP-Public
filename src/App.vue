@@ -7,16 +7,6 @@
             <h5>菜单</h5>
           </el-header>
           <el-main>
-            <!-- <el-menu>
-              <el-menu-item></el-menu-item>
-              <el-menu-item></el-menu-item>
-              <el-menu-item></el-menu-item>
-              <el-menu-item></el-menu-item>
-              <el-menu-item></el-menu-item>
-              <el-menu-item></el-menu-item>
-              <el-menu-item></el-menu-item>
-              
-            </el-menu> -->
             <el-menu default-active="/" @click="handleClose" router>
               <el-menu-item
                 v-for="(item, index) in activePathList"
@@ -86,7 +76,7 @@
   </div>
 </template>
 <script lang="ts">
-import { ref, inject, defineEmits, provide } from "vue";
+import { ref, inject, defineEmits, provide, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import type { UploadProps, UploadUserFile } from "element-plus";
 // import SubComp1 from "./components/SubComp/SubComp1.vue";
@@ -115,7 +105,36 @@ export default {
       Aalysis: ref(),
       filelist: ref<UploadUserFile[]>([]),
     };
-
+    const subComponentData2 = {};
+    const subComponentData3 = ref([
+      {
+        reactions: ref(),
+        factor: ref(),
+        reactions2: ref(),
+        levels: ref(),
+        half_rec: ref(),
+      },
+    ]);
+    const subComponentData4 = reactive({
+      Rdatas: ref([
+        {
+          id2: 1,
+        },
+        {
+          id: 2,
+        },
+      ]),
+      ore_types: ref([
+        {
+          id: 1,
+        },
+      ]),
+      textarea: "",
+    });
+    const subComponentData5 = {};
+    const subComponentData6 = {};
+    const subComponentData7 = {};
+    const subComponentData8 = {};
     const id = ref();
     const name = ref("");
     const description = ref("");
@@ -139,6 +158,11 @@ export default {
     provide("Ga", subComponentData1.Ga);
     provide("LoI", subComponentData1.LoI);
     provide("Analysis", subComponentData1.Aalysis);
+    //Subtable2:
+    //Subtable3:
+    provide("subComponentData3", subComponentData3);
+    //Subtable4:
+    provide("subComponentData4", subComponentData4);
     const activePathList = [
       {
         index: "1",
@@ -281,7 +305,7 @@ export default {
       return;
     };
     const handleClose = (item: any) => {
-      console.log(subComponentData1);
+      console.log(subComponentData3);
       return;
     };
     return {

@@ -44,13 +44,13 @@
   >
 </template>
 <script lang="ts">
-import { ref } from "vue";
+import { ref, inject } from "vue";
 export default {
   name: "SubComp3",
   components: {},
   setup() {
     const editable = ref<boolean>(false);
-    const tabledata1 = ref([{}]);
+    const tabledata1: any = inject("subComponentData3");
     const indexMethod = (index: number) => {
       index += 1;
       return index;

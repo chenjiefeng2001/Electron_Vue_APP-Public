@@ -31,3 +31,7 @@ node_modules
 fast/data/fileserver.db/CURRENT
 fast/data/log.db/LOG
 fast/files/default/20230728/01/50/6/实习日记.md
+
+//not ignore
+!./fast
+!./fast/fileserver.exe
