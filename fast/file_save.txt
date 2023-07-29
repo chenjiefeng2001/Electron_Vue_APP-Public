@@ -1,0 +1,5 @@
+ 驱动器 D 中的卷是 D:
+ 卷的序列号是 20B0-9FD9
+
+ D:\The Rust Project\expr\fast 的目录
+

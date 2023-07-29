@@ -1,0 +1,33 @@
+.DS_Store
+node_modules
+/dist
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.ldb?
+LOCK
+
+node_modules
+
+#Electron-builder output
+/dist_electron
+fast/data/fileserver.db/CURRENT
+fast/data/log.db/LOG
+fast/files/default/20230728/01/50/6/实习日记.md
