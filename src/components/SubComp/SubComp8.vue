@@ -38,53 +38,42 @@
   <el-button @click="deleteTableCol">删除数据</el-button>
   <h1>粘连关系</h1>
   <el-table :data="ana_data2">
-    <el-table-column prop="ore_type" label="粘连矿物">
+    <el-table-column
+      v-for="(column, index) in table_columns"
+      :key="index"
+      :label="column"
+    >
       <template #default="scope">
-        <el-input v-model="scope.row.ore_type" :disabled="scope.row.isEdit" />
-      </template>
-    </el-table-column>
-    <el-table-column prop="sumData" label="水铝石">
-      <template #default="scope">
-        <el-input v-model="scope.row.sumData" :disabled="scope.row.isEdit" />
-      </template>
-    </el-table-column>
-
-    <el-table-column prop="kaolinite" label="高岭石">
-      <template #default="scope">
-        <el-input v-model="scope.row.sumData" :disabled="scope.row.isEdit" />
+        <el-input v-model.number="scope.row[column]"></el-input>
       </template>
     </el-table-column>
   </el-table>
   <el-button @click="addRow">增加一行</el-button>
   <el-button @click="deleteRow">删除一行</el-button>
   <el-button @click="addColumn">增加一列</el-button>
-  <el-button @click="deleteColumn">增加一列</el-button>
+  <el-button @click="deleteColumn">删除一列</el-button>
 </template>
 <script lang="ts">
-import { ref } from "vue";
+import { ref, inject } from "vue";
 export default {
   name: "Ana_Table",
   props: [],
   setup() {
-    let index = ref(0);
+    const index: any = inject("index_8_2", ref(0));
     const tableList = ref([{}]);
-    let ana_data = ref([
-      {
-        name: "水铝石",
-      },
-    ]);
-    let ana_data2 = ref([
-      {
-        ore_type: "水铝石",
-      },
-      {
-        ore_type: "云母",
-      },
-    ]);
+    const ana_data: any = inject("subComponentData8");
+    const ana_data2: any = inject("subComponentData8_2", ref([{}]));
+    const table_columns: any = inject("table_columns");
+    // const ana_data2: any = inject("subComponentData8_2");
     const addTableCol = () => {
       // 添加一行空数据
       ana_data.value.push({
         name: "",
+        single: "",
+        value1: "",
+        value2: "",
+        value3: "",
+        value4: "",
       });
     };
     const deleteTableCol = () => {
@@ -94,24 +83,40 @@ export default {
       }
     };
     const addColumn = () => {
+      const newColumnName = `矿石${index.value}`; // Modify 'new_prop' and 'New Column' as per your requirement
       index.value += 1;
-      tableList.value.push({
-        prop: 0,
+      table_columns.value.push(newColumnName);
+      ana_data2.value.forEach((row: any) => {
+        row[newColumnName] = 0;
       });
     };
     const deleteColumn = (indices: number) => {
-      tableList.value.splice(indices, 1);
-      if (index.value < 1) index.value = 1;
-      else index.value -= 1;
+      if (table_columns.value.length > 1) {
+        // 删除最后两列
+        table_columns.value.pop();
+
+        // 删除表格数据中每一行的对应属性
+        ana_data2.value.forEach((row: any) => {
+          const lastColumnIndex = table_columns.value.length - 1;
+          const lastColumnProp = table_columns.value[lastColumnIndex];
+          delete row[lastColumnProp];
+        });
+      }
     };
     const addRow = () => {
-      ana_data2.value.push({
-        ore_type: "",
+      // 创建新的空数据行
+      const newRow: any = {};
+
+      // 为新行的每一列添加默认值（在此示例中均为0）
+      table_columns.value.forEach((column: any) => {
+        newRow[column] = 0;
       });
+
+      // 将新行添加到表格数据中
+      ana_data2.value.push(newRow);
     };
     const deleteRow = (index: number) => {
       ana_data2.value.splice(index, 1);
-      index -= 1;
     };
     return {
       ana_data,
@@ -123,6 +128,7 @@ export default {
       deleteColumn,
       addRow,
       deleteRow,
+      table_columns,
     };
   },
 };

@@ -140,16 +140,9 @@ export default {
         value4: ref(),
       },
     ]);
-    const subComponentData8_2 = reactive([
-      {
-        ore_type: ref("水铝石"),
-      },
-      {
-        ore_type: ref("云母"),
-        sumData: ref(),
-        kaolinite: ref(),
-      },
-    ]);
+    const subComponentData8_2 = ref([{}]);
+    const index_8_2 = ref(0); // 设置 index_8_2 的初始值为 0
+    const table_columns = ref(["水铝石", "高岭土"]);
 
     // Provide the data to be used by child components
     const id = ref();
@@ -187,6 +180,8 @@ export default {
     //
     provide("subComponentData8", subComponentData8);
     provide("subComponentData8_2", subComponentData8_2);
+    provide("index_8_2", index_8_2);
+    provide("table_columns", table_columns);
     const activePathList = [
       {
         index: "1",
