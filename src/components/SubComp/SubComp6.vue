@@ -1,184 +1,92 @@
 <template>
-  <el-container>
-    <el-main>
-      <el-table :data="SubTable2">
-        <el-table-column
-          v-for="(item, index) in tableList"
-          :key="index"
-          :label="item.label"
-          :prop="item.prop"
-          show-summary
-          :summary-method="getTotal"
-        >
-          <el-table-column prop="colData" label="分布率">
-            <template #default="scope">
-              <el-input
-                v-model="scope.row.colData"
-                :disabled="scope.row.isEdit"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column prop="sumData" label="合计">
-            <template #default="scope">
-              <el-input
-                v-model="scope.row.sumData"
-                :disabled="scope.row.isEdit"
-              />
-            </template>
-          </el-table-column>
-        </el-table-column>
-      </el-table>
-    </el-main>
-    <el-aside>
-      <el-row>
-        <el-col><el-button @click="addColumn">增加列</el-button></el-col>
-        <el-col><el-button @click="deleteColumn">删除列</el-button></el-col>
-      </el-row>
-      <el-row>
-        <el-col><el-button @click="addRow">增加行</el-button></el-col
-        ><el-col><el-button @click="deleteRow">删除行</el-button></el-col>
-      </el-row>
-    </el-aside>
-  </el-container>
-  <el-row :span="4">
-    <el-col :span="8">分析方法描述</el-col>
-    <el-col :span="16"
-      ><el-input
-        v-model="descrpition1"
-        :rows="2"
-        type="textarea"
-        placeholder="Please input"
-      ></el-input
-    ></el-col>
-  </el-row>
-  <h1>扫描总图</h1>
-  <el-row>
-    <el-col :span="8">
-      <el-upload
-        v-model:file-list="fileList"
-        action="http://localhost:9010/group1/upload"
-        list-type="picture-card"
-        :on-preview="handlePictureCardPreview"
-        :on-remove="handleRemove"
-      >
-        <el-icon><Plus /></el-icon>
-      </el-upload>
-    </el-col>
-    <el-col :span="8"><el-button>上传数据</el-button></el-col>
-  </el-row>
+  <el-table :data="tabledata">
+    <el-table-column
+      v-for="(column, index) in tableColumns"
+      :key="index"
+      :label="column"
+    >
+      <template #default="scope">
+        <el-input v-model.number="scope.row[column]"></el-input>
+      </template>
+    </el-table-column>
+  </el-table>
+  <el-button @click="add_row">增加一行</el-button>
+  <el-button @click="delete_row">删除一行</el-button>
+  <el-button @click="add_column">增加一列</el-button>
+  <el-button @click="delete_column">删除一列</el-button>
 </template>
-<script lang="ts">
-import { ref, defineComponent, reactive } from "vue";
-import { Plus } from "@element-plus/icons-vue";
-import type { UploadProps, UploadUserFile } from "element-plus";
+
+<script>
+import { ref, reactive, inject } from "vue";
+
 export default {
-  name: "SubComp6",
-  components: {},
   setup() {
-    let index = ref(0);
-    const tableList = ref([
-      {
-        label: "ore1",
-        prop: ref({ colData: "", sumData: "" }),
-      },
-      // 添加更多的列，每一列都有独立的响应式数据
-    ]);
-    const SubTable2 = ref([{}]);
-    const descrpition1 = ref("");
-    const fileList = ref<UploadUserFile[]>([
-      {
-        name: "",
-        url: "",
-      },
-    ]);
-    const dialogImageUrl = ref("");
-    const dialogVisible = ref(false);
-    const addColumn = () => {
-      const newIndex = tableList.value.length + 1;
-      tableList.value.push({
-        label: "ore" + newIndex,
-        prop: reactive({ colData: "", sumData: "" }),
+    const index_col = ref(0);
+    const tabledata = inject("subComponentData6");
+    const tableColumns = ref(["分布率", "合计"]); // 初始表头
+    let currentColumnCount = inject("data6index");
+    const add_row = () => {
+      // 创建新的空数据行
+      const newRow = {};
+
+      // 为新行的每一列添加默认值（在此示例中均为0）
+      tableColumns.value.forEach((column) => {
+        newRow[column] = 0;
+      });
+
+      // 将新行添加到表格数据中
+      tabledata.value.push(newRow);
+    };
+
+    const delete_row = () => {
+      if (tabledata.value.length > 0) {
+        // 删除最后一行数据
+        tabledata.value.pop();
+      }
+    };
+
+    const add_column = () => {
+      // 获取当前列数
+      // 新列名为属性+列数，例如：属性2，属性3，依此类推
+      const newColumnName = `分布率${currentColumnCount}`;
+      const newColumnName2 = `合计${currentColumnCount}`;
+      index_col.value += 1;
+
+      // 将新列名添加到表头
+      tableColumns.value.push(newColumnName);
+      tableColumns.value.push(newColumnName2);
+
+      // 为每一行添加新列的默认值（在此示例中为0）
+      tabledata.value.forEach((row) => {
+        row[newColumnName] = 0;
+        row[newColumnName2] = 0;
       });
     };
 
-    const deleteColumn = (index: number) => {
-      tableList.value.splice(index, 1);
-    };
-    const addRow = () => {
-      SubTable2.value.push({});
-    };
-    const deleteRow = (index: number) => {
-      SubTable2.value.splice(index, 1);
-      index -= 1;
-    };
-    const getTotal = (param: { columns: any; data: any }) => {
-      const { columns, data } = param;
-      const sums: string[] = [];
-      columns.forEach((column: { property: string }, index: number) => {
-        if (index === 0) {
-          sums[index] = "合计";
-          return;
-        }
-        const values = data.map((item: { [x: string]: any }) =>
-          Number(item[column.property])
-        );
-        if (column.property === "success" || column.property === "error") {
-          sums[index] = values.reduce((prev: any, curr: any) => {
-            const value = Number(curr);
-            if (!isNaN(value)) {
-              return prev + curr;
-            } else {
-              return prev;
-            }
-          }, 0);
-          sums[index];
-        } else {
-          sums[index] = "--";
-        }
-      });
-      return sums;
-    };
-    const reviseData = (row: any) => {
-      row.isEdit = true;
-    };
-    const disEditableData = (row: any) => {
-      row.isEdit = false;
-    };
-    const handleRemove: UploadProps["onRemove"] = (uploadFile, uploadFiles) => {
-      console.log(uploadFile, uploadFiles);
+    const delete_column = () => {
+      if (tableColumns.value.length > 2) {
+        // 删除最后两列
+        tableColumns.value.pop();
+        tableColumns.value.pop();
+
+        // 删除表格数据中每一行的对应属性
+        tabledata.value.forEach((row) => {
+          const lastColumnIndex = tableColumns.value.length - 1;
+          const lastColumnProp = tableColumns.value[lastColumnIndex];
+          delete row[lastColumnProp];
+        });
+      }
     };
 
-    const handlePictureCardPreview: UploadProps["onPreview"] = (uploadFile) => {
-      dialogImageUrl.value = uploadFile.url!;
-      dialogVisible.value = true;
-    };
-    const ChildComp = {
-      setup(props: any) {
-        return;
-      },
-    };
     return {
-      index,
-      descrpition1,
-      tableList,
-      SubTable2,
-      addColumn,
-      deleteColumn,
-      addRow,
-      deleteRow,
-      getTotal,
-      reviseData,
-      disEditableData,
-      handleRemove,
-      handlePictureCardPreview,
-      dialogVisible,
-      fileList,
+      index_col,
+      tabledata,
+      tableColumns,
+      add_row,
+      delete_row,
+      add_column,
+      delete_column,
     };
   },
 };
 </script>
-<style>
-.p {
-  margin-left: auto;
-}
-</style>
