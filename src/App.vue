@@ -79,14 +79,6 @@
 import { ref, inject, defineEmits, provide, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import type { UploadProps, UploadUserFile } from "element-plus";
-// import SubComp1 from "./components/SubComp/SubComp1.vue";
-// import SubComp2 from "./components/SubComp/SubComp2.vue";
-// import SubComp3 from "./components/SubComp/SubComp3.vue";
-// import SubComp4 from "./components/SubComp/SubComp4.vue";
-// import SubComp5 from "./components/SubComp/SubComp5.vue";
-// import SubComp6 from "./components/SubComp/SubComp6.vue";
-// import SubComp7 from "./components/SubComp/SubComp7.vue";
-// import SubComp8 from "./components/SubComp/SubComp8.vue";
 export default {
   components: {},
   setup() {
@@ -115,29 +107,55 @@ export default {
         half_rec: ref(),
       },
     ]);
-    const subComponentData4 = reactive({
-      Rdatas: ref([
-        {
-          id2: 1,
-        },
-        {
-          id: 2,
-        },
-      ]),
-      ore_types: ref([
-        {
-          id: 1,
-        },
-      ]),
-      textarea: "",
-    });
+    const subComponentData4 = reactive([
+      {
+        Rdatas: ref([
+          {
+            id2: 1,
+          },
+          {
+            id: 2,
+          },
+        ]),
+        ore_types: ref([
+          {
+            id: 1,
+          },
+        ]),
+        textarea: "",
+      },
+    ]);
     const subComponentData5 = {};
-    const subComponentData6 = {};
+    const subComponentData6 = ref([]);
     const subComponentData7 = {};
-    const subComponentData8 = {};
+    const index = reactive({ value: 0 });
+    const tableList = reactive([{}]);
+    const subComponentData8 = ref([
+      {
+        name: ref("水铝石"),
+        single: ref(),
+        value1: ref(),
+        value2: ref(),
+        value3: ref(),
+        value4: ref(),
+      },
+    ]);
+    const subComponentData8_2 = reactive([
+      {
+        ore_type: ref("水铝石"),
+      },
+      {
+        ore_type: ref("云母"),
+        sumData: ref(),
+        kaolinite: ref(),
+      },
+    ]);
+
+    // Provide the data to be used by child components
     const id = ref();
     const name = ref("");
     const description = ref("");
+    let data6index = 0;
     // const comp1 = ref([
     //   {
     //     Al: ref(),
@@ -163,6 +181,12 @@ export default {
     provide("subComponentData3", subComponentData3);
     //Subtable4:
     provide("subComponentData4", subComponentData4);
+    //Subtable6:
+    provide("subComponentData6", subComponentData6);
+    provide("data6index", data6index);
+    //
+    provide("subComponentData8", subComponentData8);
+    provide("subComponentData8_2", subComponentData8_2);
     const activePathList = [
       {
         index: "1",
