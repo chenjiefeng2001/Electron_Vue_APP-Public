@@ -336,7 +336,7 @@ export default {
       return;
     };
     const handleClose = (item: any) => {
-      console.log(subComponentData3);
+      console.log(subComponentData1);
       return;
     };
     return {
