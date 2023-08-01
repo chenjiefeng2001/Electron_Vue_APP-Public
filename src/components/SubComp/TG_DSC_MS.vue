@@ -46,12 +46,7 @@ export default {
   name: "TG_DSC_MS",
   components: {},
   setup() {
-    const fileList = ref<UploadUserFile[]>([
-      {
-        name: "",
-        url: "",
-      },
-    ]);
+    const fileList = ref<UploadUserFile[]>([]);
 
     const dialogImageUrl = ref("");
     const dialogVisible = ref(false);
@@ -64,12 +59,7 @@ export default {
       dialogImageUrl.value = uploadFile.url!;
       dialogVisible.value = true;
     };
-    const fileList2 = ref<UploadUserFile[]>([
-      {
-        name: "element-plus-logo.svg",
-        url: "",
-      },
-    ]);
+    const fileList2 = ref<UploadUserFile[]>([]);
 
     const handleRemoveExcel: UploadProps["onRemove"] = (file, uploadFiles) => {
       console.log(file, uploadFiles);

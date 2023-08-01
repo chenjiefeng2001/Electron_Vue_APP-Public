@@ -97,7 +97,17 @@ export default {
       Aalysis: ref(),
       filelist: ref<UploadUserFile[]>([]),
     };
-    const subComponentData2 = {};
+    const subComponentData2 = {
+      comp_data: ref([
+        {
+          const: "物相",
+        },
+        {
+          const: "含量",
+        },
+      ]),
+      comp_columns: ref([{ key: "const", label: "参数" }]),
+    };
     const subComponentData3 = ref([
       {
         reactions: ref(),
@@ -170,6 +180,8 @@ export default {
     provide("LoI", subComponentData1.LoI);
     provide("Analysis", subComponentData1.Aalysis);
     //Subtable2:
+    provide("subcomp2_data", subComponentData2.comp_data);
+    provide("subcomp2_column", subComponentData2.comp_columns);
     //Subtable3:
     provide("subComponentData3", subComponentData3);
     //Subtable4:
