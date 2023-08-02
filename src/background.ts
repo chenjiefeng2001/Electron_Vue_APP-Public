@@ -41,7 +41,6 @@ function runCommand() {
 
   // 设置文件夹路径，可以根据需要替换为你的文件夹路径
   const folderPath = "D:/The Rust Project/expr/fast";
-
   // 设置命令执行的选项，包括让子进程在后台运行
   const options: any = {
     cwd: folderPath,

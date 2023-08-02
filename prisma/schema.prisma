@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model userdata {
+  id Int @id @default(autoincrement())
+}
+
+model data2 {
+  id       Int      @id
+  date     DateTime
+  AL       Float
+  Si       Float
+  Ti       Float
+  Ca       Float
+  Others   Float
+  ST       Float
+  S2       Float
+  SO4      Float
+  Ga       Float
+  Loi      Float
+  Analysis String
+}
+
+model data3 {
+  id    Int    @id
+  state String
+  comp  Float
+}
+
+model data4 {
+  id        Int    @id
+  reaction  String
+  factor    Int
+  reaction2 String
+  levels    Int
+  haf_rec   Float
+}
+
+model data5{
+  id Int@id
+  ore_id Int
+  ore_types String
+}
+model data6{
+  id Int@id
+  ore_name String
+  value1 Float
+  value2 Float
+  value3 Float
+  value4 Float
+  value5 Float
+}
+model data7{
+  id Int@id
+  distri Float
+  sum Float
+}

@@ -79,6 +79,8 @@
 import { ref, inject, defineEmits, provide, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import type { UploadProps, UploadUserFile } from "element-plus";
+import { PrismaClient } from "@prisma/client";
+
 export default {
   components: {},
   setup() {
@@ -159,12 +161,6 @@ export default {
     const name = ref("");
     const description = ref("");
     let data6index = 0;
-    // const comp1 = ref([
-    //   {
-    //     Al: ref(),
-    //     Si: ref(),
-    //   },
-    // ]);
     //sycn the data using the provide/inject method
     //SubTable1:
     provide("Al", subComponentData1.Al);
@@ -236,6 +232,7 @@ export default {
         navName: "矿物学分析",
       },
     ];
+    const prisma = new PrismaClient();
     const upload_data = () => {
       ElMessageBox.confirm(
         "请确定是否上传数据？一旦上传则不可撤销",
